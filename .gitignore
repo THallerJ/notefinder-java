@@ -3,3 +3,5 @@
 out/
 docs/
 *.iml
+META-INF/
+src/META-INF/
