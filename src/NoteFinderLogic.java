@@ -3,12 +3,12 @@ import java.util.Random;
 
 /**
  * Handles the logic of the program.
+ *
  * @author Thomas Haller
  */
 public class NoteFinderLogic {
   private int currentInterval;
   private int maxFrets;
-  private int[] note;
 
   private ArrayList<GuitarString> allowedStrings;
   private GuitarString currentGuitarString;
@@ -18,8 +18,6 @@ public class NoteFinderLogic {
    * Constructs a new NoteFinderLogic object.
    */
   public NoteFinderLogic() {
-    note = new int[2];
-
     allowedStrings = new ArrayList<>();
     allowedStrings.add(GuitarString.HIGH_E);
     allowedStrings.add(GuitarString.B);
@@ -37,18 +35,24 @@ public class NoteFinderLogic {
   public void setNote() {
     Random rand = new Random();
 
-    note[0] = rand.nextInt(allowedStrings.size());
-    note[1] = rand.nextInt(getMaxFrets() - 1);
+    int randGuitarString;
+    int randInterval;
 
-    currentGuitarString = allowedStrings.get(note[0]);
+    // Prevent the generated note from being the same as the previously generated note.
+    do {
+      randGuitarString = rand.nextInt(allowedStrings.size());
+      randInterval = rand.nextInt(getMaxFrets() - 1);
+    } while ((allowedStrings.get(randGuitarString) == currentGuitarString) && (randInterval == currentInterval));
 
-    currentInterval = note[1];
+    currentGuitarString = allowedStrings.get(randGuitarString);
+    currentInterval = randInterval;
 
     System.out.println("Correct Note: " + getCorrectAnswer());
   }
 
   /**
    * Finds the correct note name of the current note.
+   *
    * @return The correct note name.
    */
   public String getCorrectAnswer() {
@@ -57,6 +61,7 @@ public class NoteFinderLogic {
 
   /**
    * Limits the guitar strings on which to generate random notes.
+   *
    * @param guitarString The GuitarString to be added or removed from allowedStrings
    * @return A boolean value that indicates whether a guitar string was successfully
    * added or removed from allowedStrings
@@ -89,6 +94,7 @@ public class NoteFinderLogic {
   /**
    * Retrieves the number of frets on guitar's fretboard.
    * Used for placing an upper limit on the interval of the randomly generated note.
+   *
    * @return The number of frets on the guitar's fretboard.
    */
   public int getMaxFrets() {
@@ -97,6 +103,7 @@ public class NoteFinderLogic {
 
   /**
    * Sets the size of the guitar's fretboard.
+   *
    * @param fretNum The number of frets on the guitar's fretboard.
    */
   public void setMaxFrets(int fretNum) {
@@ -105,6 +112,7 @@ public class NoteFinderLogic {
 
   /**
    * Retrieves the guitar string that has the current note.
+   *
    * @return The guitar string that has the current note.
    */
   public GuitarString getGuitarString() {
@@ -113,6 +121,7 @@ public class NoteFinderLogic {
 
   /**
    * Retrieves the interval of the current note.
+   *
    * @return The interval of the current note.
    */
   public int getInterval() {
